@@ -1,0 +1,60 @@
+.button {
+  // dont give width: 100% pass additonalStyles instead
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+  }
+  .icon2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+  }
+}
+
+.primary {
+  background-color: #4384e6;
+  border: 1px solid #4384e6;
+  color: #ffffff;
+}
+
+.primaryDisabled {
+  background-color: #c2c2c2;
+  color: #ffffff;
+}
+
+.secondary {
+  background-color: #222222;
+  border: 1px solid #222222;
+  color: #ffffff;
+}
+
+.outline {
+  border: 1px solid #e2e2e2;
+  background-color: #ffffff;
+  color: #222222;
+}
+
+.big {
+  font-size: 16px;
+  padding: 18px;
+}
+
+.fullWidth {
+  width: 100% !important;
+}
+
+.disabled {
+  pointer-events: none;
+  background-color: #ededed !important;
+  color: #a2a2a2;
+}

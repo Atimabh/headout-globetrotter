@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  align-items: center;
+  margin-left: -100px;
+  margin-top: 32px;
+  animation: slideInFromRight 2s ease-out forwards;
+
+  img {
+    width: 100px;
+    margin-right: -2px;
+  }
+  .factContainer {
+    width: 800px;
+    background-color: #ffffff;
+    padding: 16px 12px;
+    border-radius: 8px;
+    text-align: center;
+    .title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #222222;
+      margin-bottom: 16px;
+    }
+    .fact {
+      font-size: 16px;
+    }
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
