@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 
 // const base_url = 'http://127.0.0.1:5000'
-const base_url = 'http://globetrotter.atimabh.in'
+const base_url = 'https://globetrotter.atimabh.in'
 
 export async function getRequest(endpoint: string, responseType?: XMLHttpRequestResponseType) {
   try {
