@@ -9,16 +9,16 @@ import { postRequest } from '../../../../utils/requests'
 import { toast } from 'react-toastify'
 import Spinner from '../../../_shared/Spinner'
 
-import { hmac } from "@noble/hashes/hmac";
-import { sha256 } from "@noble/hashes/sha256";
-import { utf8ToBytes, bytesToHex } from "@noble/hashes/utils";
+import { hmac } from '@noble/hashes/hmac'
+import { sha256 } from '@noble/hashes/sha256'
+import { utf8ToBytes, bytesToHex } from '@noble/hashes/utils'
 
 type ChallengeFriendModalPropsType = {
   onClose: () => void
   score: number
 }
 
-const secret = process.env.SECRET
+const secret = import.meta.env.SECRET
 
 function generateSignature(username: string, score: number): string {
   const key = utf8ToBytes(secret)
