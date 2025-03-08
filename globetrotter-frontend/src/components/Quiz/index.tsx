@@ -23,7 +23,7 @@ export default function Quiz() {
 
   const [showHint, setShowHint] = useState(false)
 
-  const [isGameEnd, setIsGameEnd] = useState(false)
+  const [isGameEnd, setIsGameEnd] = useState(true)
 
   const [isLoading, setIsLoading] = useState({
     questions: false,
