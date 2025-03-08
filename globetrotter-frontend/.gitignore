@@ -25,3 +25,5 @@ dist-ssr
 
 
 sample.json
+
+.DS_Store
