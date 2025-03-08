@@ -2,8 +2,18 @@ from flask import Blueprint, request, jsonify
 from app import db
 from app.models import Destinations, Players
 from sqlalchemy.sql.expression import func
+import hashlib
+import hmac
+import os
 
 main = Blueprint("main", __name__)
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+
+def verify_signature(username, score, signature):
+    expected_signature = hmac.new(SECRET_KEY.encode(), f"{username}{score}".encode(), hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected_signature, signature)
 
 
 # Get 10 random cities for quiz
@@ -24,9 +34,13 @@ def save_score():
     data = request.json
     username = data.get("username")
     score = data.get("score")
+    signature = data.get("signature")
 
     if not username or score is None:
         return jsonify({"error": "Username and score are required"}), 400
+
+    if not verify_signature(username, score, signature):
+        return jsonify({"error": "Invalid signature"}), 403
 
     # Check if the player exists
     player = Players.query.filter_by(username=username).first()
