@@ -8,10 +8,17 @@ import html2canvas from 'html2canvas'
 import { postRequest } from '../../../../utils/requests'
 import { toast } from 'react-toastify'
 import Spinner from '../../../_shared/Spinner'
+import crypto from 'crypto'
 
 type ChallengeFriendModalPropsType = {
   onClose: () => void
   score: number
+}
+
+const secret = process.env.SECRET
+
+function generateSignature(username: string, score: number) {
+  return crypto.createHmac('sha256', secret).update(`${username}${score}`).digest('hex')
 }
 
 export default function ChallengeFriendModal({ onClose, score }: ChallengeFriendModalPropsType) {
@@ -36,6 +43,7 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
     const payload = {
       username: username,
       score: score,
+      signature: generateSignature(username, score),
     }
     const response = await postRequest('/save-score', payload)
     if (response.success) {
@@ -68,7 +76,7 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
 
   // Function to share the challenge with friends
   async function shareChallenge() {
-    const gameLink = `https://your-game.com/challenge?ref=${username}`
+    const gameLink = `https://atimabh-globetrotter.netlify.app/challenge?ref=${username}`
     const message = `🔥 ${username} scored ${score} points! Can you beat them? Play now: ${gameLink}`
 
     // Try to use the Web Share API for mobile devices if available
