@@ -4,6 +4,7 @@ import Quiz from './components/Quiz'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Home from './components/Home'
+import Challenge from './components/Quiz/Challenge'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/quiz" element={<Quiz />} />
+        <Route path="/challenge" element={<Challenge />} />
       </Routes>
     </div>
   )
