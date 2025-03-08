@@ -95,11 +95,13 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
     const message = `🔥 ${username} scored ${score} points! Can you beat them? Play now: ${gameLink}`
 
     // Try to use the Web Share API for mobile devices if available
-    if (navigator.share && navigator.canShare({ files: [new File([scoreImage], 'challenge.png', { type: 'image/png' })] })) {
+    // Convert Base64 to Blob
+    const blob = await fetch(scoreImage).then((res) => res.blob())
+    if (navigator.share && navigator.canShare({ files: [new File([blob], 'challenge.png', { type: 'image/png' })] })) {
       try {
         await navigator.share({
           text: message,
-          files: [new File([scoreImage], 'challenge.png', { type: 'image/png' })],
+          files: [new File([blob], 'challenge.png', { type: 'image/png' })],
         })
         return
       } catch (error) {
