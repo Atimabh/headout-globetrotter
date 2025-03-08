@@ -13,7 +13,7 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, origins=["http://localhost:5173"])
+    CORS(app, origins=["http://localhost:5173", "https://atimabh-globetrotter.netlify.app"])
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
