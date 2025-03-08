@@ -67,11 +67,17 @@
           border-color: #2fa147;
           color: #2fa147;
           font-size: 28px;
+          &:hover {
+            border-color: #2fa147; //for mobile devices
+          }
         }
         .incorrect {
           border-color: #ff475d;
           color: #ff475d;
           animation: shake 0.5s ease-in-out;
+          &:hover {
+            border-color: #ff475d; //for mobile devices
+          }
         }
       }
     }

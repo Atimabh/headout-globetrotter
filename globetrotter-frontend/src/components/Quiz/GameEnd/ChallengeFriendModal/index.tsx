@@ -96,19 +96,19 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
 
     // Try to use the Web Share API for mobile devices if available
     // Convert Base64 to Blob
-    const blob = await fetch(scoreImage).then((res) => res.blob())
-    const file = new File([blob], "challenge.png", { type: "image/png" });
-    if (navigator.share && navigator.canShare({ files: [new File([file], 'challenge.png', { type: 'image/png' })] })) {
-      try {
-        await navigator.share({
-          text: message,
-          files: [new File([file], 'challenge.png', { type: 'image/png' })],
-        })
-        return
-      } catch (error) {
-        console.log('Web Share failed, using WhatsApp instead', error)
-      }
-    }
+    // const blob = await fetch(scoreImage).then((res) => res.blob())
+    // const file = new File([blob], "challenge.png", { type: "image/png" });
+    // if (navigator.share && navigator.canShare({ files: [new File([file], 'challenge.png', { type: 'image/png' })] })) {
+    //   try {
+    //     await navigator.share({
+    //       text: message,
+    //       files: [new File([file], 'challenge.png', { type: 'image/png' })],
+    //     })
+    //     return
+    //   } catch (error) {
+    //     console.log('Web Share failed, using WhatsApp instead', error)
+    //   }
+    // }
 
     // Fallback to WhatsApp sharing for web browsers
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
