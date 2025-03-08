@@ -8,7 +8,10 @@ import html2canvas from 'html2canvas'
 import { postRequest } from '../../../../utils/requests'
 import { toast } from 'react-toastify'
 import Spinner from '../../../_shared/Spinner'
-import crypto from 'crypto'
+
+import { hmac } from "@noble/hashes/hmac";
+import { sha256 } from "@noble/hashes/sha256";
+import { utf8ToBytes, bytesToHex } from "@noble/hashes/utils";
 
 type ChallengeFriendModalPropsType = {
   onClose: () => void
@@ -17,8 +20,20 @@ type ChallengeFriendModalPropsType = {
 
 const secret = process.env.SECRET
 
-function generateSignature(username: string, score: number) {
-  return crypto.createHmac('sha256', secret).update(`${username}${score}`).digest('hex')
+function generateSignature(username: string, score: number): string {
+  const key = utf8ToBytes(secret)
+  const message = utf8ToBytes(`${username}${score}`)
+  const signature = hmac(sha256, key, message)
+  return bytesToHex(signature)
+}
+
+async function generateHash(data: string) {
+  const encoder = new TextEncoder()
+  const dataBuffer = encoder.encode(data)
+
+  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('')
 }
 
 export default function ChallengeFriendModal({ onClose, score }: ChallengeFriendModalPropsType) {

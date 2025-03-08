@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@noble/hashes": "^1.7.1",
     "axios": "^1.8.2",
     "clsx": "^2.1.1",
-    "crypto": "^1.0.1",
     "html2canvas": "^1.4.1",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
