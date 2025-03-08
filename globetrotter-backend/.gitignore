@@ -1,0 +1,30 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+venv/
+env/
+.venv
+
+.env
+*.env
+instance/  # Flask instance folder if used
+
+migrations/  # Ignore if you regenerate migrations often
+*.sqlite3
+*.db
+
+gunicorn.log
+gunicorn.error.log
+
+.DS_Store
+.idea/
+*.swp
+*.swo
+
+Dockerfile
+docker-compose.yml
+
+Pipfile
+Pipfile.lock
