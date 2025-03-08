@@ -10,6 +10,7 @@ import { QuestionType } from '../../utils/types'
 import GameEnd from './GameEnd'
 import HintModal from './HintModal'
 import Spinner from '../_shared/Spinner'
+import { Howl } from 'howler'
 
 export default function Quiz() {
   const [bulbOn, setBulbOn] = useState(false)
@@ -37,9 +38,11 @@ export default function Quiz() {
       setScore((prev) => prev + 2)
       setCorrectCount((prev) => prev + 1)
       setAnswerState('correct')
+      new Howl({ src: ['/correct.mp3'], volume: 0.7, autoplay: true })
     } else {
       setAnswerState('incorrect')
       setShowCorrectAnswer(true)
+      new Howl({ src: ['/wrong.mp3'], volume: 0.7, autoplay: true })
     }
     setShowFact(true)
   }
@@ -79,6 +82,18 @@ export default function Quiz() {
 
   useEffect(() => {
     getCities()
+  }, [])
+
+  // background music for the quiz
+  useEffect(() => {
+    const sound = new Howl({
+      src: ['/background.mp3'],
+      loop: true,
+      volume: 0.2,
+      autoplay: true,
+    })
+
+    return () => sound.stop() // Stop when component unmounts
   }, [])
 
   return (
