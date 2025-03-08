@@ -5,3 +5,8 @@ export type QuestionType = {
   fun_fact: string[]
   options: string[]
 }
+
+export type LeaderboardPlayerType = {
+  username: string
+  high_score: number
+}

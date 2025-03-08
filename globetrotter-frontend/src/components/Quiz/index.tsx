@@ -9,6 +9,7 @@ import { getRequest } from '../../utils/requests'
 import { QuestionType } from '../../utils/types'
 import GameEnd from './GameEnd'
 import HintModal from './HintModal'
+import Spinner from '../_shared/Spinner'
 
 export default function Quiz() {
   const [bulbOn, setBulbOn] = useState(false)
@@ -23,7 +24,7 @@ export default function Quiz() {
 
   const [showHint, setShowHint] = useState(false)
 
-  const [isGameEnd, setIsGameEnd] = useState(true)
+  const [isGameEnd, setIsGameEnd] = useState(false)
 
   const [isLoading, setIsLoading] = useState({
     questions: false,
@@ -84,7 +85,9 @@ export default function Quiz() {
     <>
       <div className={styles.container}>
         {isLoading.questions || !questions.length ? (
-          <p>loading</p>
+          <div className={styles.spinner}>
+            <Spinner invertColor />
+          </div>
         ) : isGameEnd ? (
           <GameEnd score={score} correctCount={correctCount} playAgain={playAgain} />
         ) : (

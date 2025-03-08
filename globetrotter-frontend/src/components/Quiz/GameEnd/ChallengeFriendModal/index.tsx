@@ -5,6 +5,9 @@ import Modal from '../../../_shared/Modal'
 import styles from './styles.module.scss'
 import ReactSpeedometer from 'react-d3-speedometer'
 import html2canvas from 'html2canvas'
+import { postRequest } from '../../../../utils/requests'
+import { toast } from 'react-toastify'
+import Spinner from '../../../_shared/Spinner'
 
 type ChallengeFriendModalPropsType = {
   onClose: () => void
@@ -12,24 +15,49 @@ type ChallengeFriendModalPropsType = {
 }
 
 export default function ChallengeFriendModal({ onClose, score }: ChallengeFriendModalPropsType) {
+  // Reference for capturing the score display as an image
   const captureRef = useRef(null)
+  // State to manage the two-step form process (1: username input, 2: sharing options)
   const [formStep, setFormStep] = useState(1)
+  // State to store the generated score image
   const [scoreImage, setScoreImage] = useState(null)
+  // State to store the user's username
+  const [username, setUsername] = useState('')
 
-  const [username, setUsername] = useState('asdasd')
+  const [isLoading, setIsLoading] = useState(false)
 
+  // Function to save user's score to the backend
   async function saveSession() {
-    setFormStep(2)
+    if (username == '') {
+      toast.error('Enter a valid username')
+      return
+    }
+    setIsLoading(true)
+    const payload = {
+      username: username,
+      score: score,
+    }
+    const response = await postRequest('/save-score', payload)
+    if (response.success) {
+      toast.success('Score saved')
+      setFormStep(2)
+    } else {
+      toast.error(response.message)
+    }
+    setIsLoading(false)
   }
 
+  // Function to capture and download the score display as an image
   async function downloadScore() {
     if (!captureRef.current) return
 
+    // Convert the DOM element to a canvas and then to a base64 image
     const canvas = await html2canvas(captureRef.current, { useCORS: true })
-    const imageURL = canvas.toDataURL('image/png') // Convert to base64
+    const imageURL = canvas.toDataURL('image/png')
 
     setScoreImage(imageURL)
 
+    // Create and trigger a download link
     const link = document.createElement('a')
     link.href = imageURL
     link.download = 'score.png'
@@ -38,24 +66,25 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
     document.body.removeChild(link)
   }
 
+  // Function to share the challenge with friends
   async function shareChallenge() {
     const gameLink = `https://your-game.com/challenge?ref=${username}`
     const message = `🔥 ${username} scored ${score} points! Can you beat them? Play now: ${gameLink}`
 
-    // if (navigator.share && navigator.canShare({ files: [new File([scoreImage], 'challenge.png', { type: 'image/png' })] })) {
-    //   // Mobile: Use Web Share API (image + text)
-    //   try {
-    //     await navigator.share({
-    //       text: message,
-    //       files: [new File([scoreImage], 'challenge.png', { type: 'image/png' })],
-    //     })
-    //     return
-    //   } catch (error) {
-    //     console.log('Web Share failed, using WhatsApp instead', error)
-    //   }
-    // }
+    // Try to use the Web Share API for mobile devices if available
+    if (navigator.share && navigator.canShare({ files: [new File([scoreImage], 'challenge.png', { type: 'image/png' })] })) {
+      try {
+        await navigator.share({
+          text: message,
+          files: [new File([scoreImage], 'challenge.png', { type: 'image/png' })],
+        })
+        return
+      } catch (error) {
+        console.log('Web Share failed, using WhatsApp instead', error)
+      }
+    }
 
-    // Web: Use WhatsApp API (text only)
+    // Fallback to WhatsApp sharing for web browsers
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
   }
@@ -63,14 +92,15 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
   return (
     <Modal title="Challenge a Friend" onClose={onClose}>
       <div className={styles.container}>
+        {/* Step 1: Username input form */}
         {formStep == 1 ? (
           <div className={styles.createUsername}>
-            <Input fullWidth type="text" label="Save your progress" placeholder="Create your username" onChange={(e) => console.log(e.target.value)} />
+            <Input fullWidth type="text" label="Save your progress" placeholder="Create your username" onChange={(e) => setUsername(e.target.value)} />
             <Button
               width={120}
               additionalStyles={styles.saveButton}
               type="primary"
-              text="Save"
+              text={isLoading ? <Spinner buttonLoader /> : 'Save'}
               backgroundColor="#673ab7"
               borderColor="#673ab7"
               padding="12px 0"
@@ -78,6 +108,7 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
             />
           </div>
         ) : (
+          // Step 2: Score display and sharing options
           <div className={styles.share}>
             <div className={styles.score} ref={captureRef}>
               <p>Can you beat my score?</p>
@@ -89,7 +120,7 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
               <Button
                 fullWidth
                 type="outline"
-                text="Save Image"
+                text="Download Score"
                 fontSize={18}
                 padding="14px 0"
                 backgroundColor="#ffffff"

@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 
-const base_url = 'http://127.0.0.1:5000'
+// const base_url = 'http://127.0.0.1:5000'
+const base_url = 'http://globetrotter.atimabh.in'
 
 export async function getRequest(endpoint: string, responseType?: XMLHttpRequestResponseType) {
   try {
@@ -21,28 +22,11 @@ export async function getRequest(endpoint: string, responseType?: XMLHttpRequest
   }
 }
 
-export async function getRequestDownloadZip(endpoint: string) {
-  try {
-    const response = await axios.get(`${base_url}${endpoint}`, {
-      responseType: 'blob',
-      withCredentials: true,
-      transformResponse: [(data) => data],
-    })
-    return {
-      success: true,
-      message: '',
-      data: response.data,
-      status: response.status,
-    }
-  } catch (error: any) {
-    return normalizeErrorMessage(error)
-  }
-}
+
 
 export async function postFormDataRequest(endpoint: string, payload: any) {
   try {
     const response = await axios.post(`${base_url}${endpoint}`, payload, {
-      withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -57,10 +41,10 @@ export async function postFormDataRequest(endpoint: string, payload: any) {
     return normalizeErrorMessage(error)
   }
 }
+
 export async function postRequest(endpoint: string, payload: any) {
   try {
     const response = await axios.post(`${base_url}${endpoint}`, payload, {
-      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -80,7 +64,6 @@ export async function postRequest(endpoint: string, payload: any) {
 export async function deleteRequest(endpoint: string) {
   try {
     const response = await axios.delete(`${base_url}${endpoint}`, {
-      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -99,7 +82,6 @@ export async function deleteRequest(endpoint: string) {
 export async function patchRequest(endpoint: string, payload: any) {
   try {
     const response = await axios.patch(`${base_url}${endpoint}`, payload, {
-      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -119,7 +101,6 @@ export async function patchRequest(endpoint: string, payload: any) {
 export async function patchRequestFormData(endpoint: string, payload: any) {
   try {
     const response = await axios.patch(`${base_url}${endpoint}`, payload, {
-      withCredentials: true,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },

@@ -8,6 +8,9 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
+  .spinner {
+    margin-top: 120px;
+  }
   .quiz {
     width: 800px;
     .lottie {
