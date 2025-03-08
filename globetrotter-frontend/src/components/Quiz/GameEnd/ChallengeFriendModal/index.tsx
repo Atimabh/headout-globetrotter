@@ -18,7 +18,7 @@ type ChallengeFriendModalPropsType = {
   score: number
 }
 
-const secret = import.meta.env.SECRET
+const secret = import.meta.env.VITE_SECRET
 
 function generateSignature(username: string, score: number): string {
   const key = utf8ToBytes(secret)
