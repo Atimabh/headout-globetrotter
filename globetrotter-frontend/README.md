@@ -1,54 +1,87 @@
-# React + TypeScript + Vite
+# 🎨 Globetrotter Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the **frontend** of Globetrotter, a travel guessing game built with **React (Vite)**. Users guess destinations based on clues and compete on a leaderboard.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🌍 **Destination Quiz** – Guess the city based on cryptic clues.
+- 🎉 **Instant Feedback** – Confetti for correct answers, animations for wrong ones.
+- 🔗 **Challenge a Friend** – Shareable invite link with a dynamic score image.
+- 📊 **Leaderboard** – Tracks user scores.
+- 🎵 **Sound Effects & Background Music** – Enhanced experience using `howler.js`.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📂 Project Structure
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+globetrotter-frontend/
+│── public/            # Static assets (images, sounds, etc.)
+│── src/
+│   ├── assets/        # Icons, images, and audio files
+│   ├── components/    # Reusable UI components
+|   |     |- _shared/  # Shared components (Buttons, Loaders etc.)
+|   |     |- Home/     # Home componenets
+|   |     |- Quiz/     # Quiz Components
+│   ├── utils/         # Helper functions
+│   ├── App.tsx        # Main application component
+│   ├── main.tsx       # Entry point
+│── .env               # Environment variables
+│── vite.config.ts     # Vite configuration
+│── package.json       # Dependencies & scripts
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛠️ Setup & Installation
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### **1. Install Dependencies**
+
+```bash
+cd globetrotter-frontend
+npm install
 ```
+
+### **2. Set Up Environment Variables**
+
+Create a `.env` file inside the `globetrotter-frontend/` folder:
+
+```ini
+VITE_BSECRET=secret_key # used for hash signature
+```
+
+### **3. Start Development Server**
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`.
+
+---
+
+## 📡 API Integration
+
+The frontend communicates with the backend via REST API endpoints.
+Example:
+
+```ts
+getRequest('/destinations')
+  .then((res) => res.json())
+  .then((data) => console.log(data))
+```
+
+---
+
+## 🔥 Deployment (Netlify)
+
+### **1. Build for Production**
+
+```bash
+npm run build
+```
+
+### **2. Deploy to Netlify**
+
+- Set **publish directory** to `globetrotter-frontend/dist/`.
+- Define **environment variables** (`VITE_SECRET`).
