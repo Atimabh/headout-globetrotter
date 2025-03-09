@@ -27,15 +27,6 @@ function generateSignature(username: string, score: number): string {
   return bytesToHex(signature)
 }
 
-async function generateHash(data: string) {
-  const encoder = new TextEncoder()
-  const dataBuffer = encoder.encode(data)
-
-  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('')
-}
-
 export default function ChallengeFriendModal({ onClose, score }: ChallengeFriendModalPropsType) {
   // Reference for capturing the score display as an image
   const captureRef = useRef(null)
@@ -94,23 +85,6 @@ export default function ChallengeFriendModal({ onClose, score }: ChallengeFriend
     const gameLink = `https://atimabh-globetrotter.netlify.app/challenge?ref=${username}`
     const message = `🔥 ${username} scored ${score} points! Can you beat them? Play now: ${gameLink}`
 
-    // Try to use the Web Share API for mobile devices if available
-    // Convert Base64 to Blob
-    // const blob = await fetch(scoreImage).then((res) => res.blob())
-    // const file = new File([blob], "challenge.png", { type: "image/png" });
-    // if (navigator.share && navigator.canShare({ files: [new File([file], 'challenge.png', { type: 'image/png' })] })) {
-    //   try {
-    //     await navigator.share({
-    //       text: message,
-    //       files: [new File([file], 'challenge.png', { type: 'image/png' })],
-    //     })
-    //     return
-    //   } catch (error) {
-    //     console.log('Web Share failed, using WhatsApp instead', error)
-    //   }
-    // }
-
-    // Fallback to WhatsApp sharing for web browsers
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
   }

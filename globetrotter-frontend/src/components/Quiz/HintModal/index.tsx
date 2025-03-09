@@ -14,7 +14,7 @@ export default function HintModal({ onClose, hint }: HintModalPropsType) {
         <p>
           <span>
             <Icon icon={'emojione:light-bulb'} width={24} />
-          </span>
+          </span>{' '}
           {hint}
         </p>
       </div>

@@ -1,6 +1,6 @@
 # 🌍 Globetrotter – The Ultimate Travel Guessing Game
 
-[🚀 **Live Demo**](https://atimabh-globetrotter.netlify.app)
+[🚀 **Live Demo (Sound On!)**](https://atimabh-globetrotter.netlify.app)
 
 Globetrotter is a full-stack web app where users guess destinations based on cryptic clues. After guessing, users unlock fun facts and trivia about the location. The app also features a leaderboard and a "Challenge a Friend" mode.
 

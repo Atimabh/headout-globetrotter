@@ -13,40 +13,62 @@ import Spinner from '../_shared/Spinner'
 import { Howl } from 'howler'
 
 export default function Quiz() {
+  // State for light bulb hover effect
   const [bulbOn, setBulbOn] = useState(false)
+  // Track current question number
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  // Track player's score
   const [score, setScore] = useState(0)
+  // Track number of correct answers
   const [correctCount, setCorrectCount] = useState(0)
 
+  // States for answer feedback
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [answerState, setAnswerState] = useState<'correct' | 'incorrect' | null>(null)
   const [showFact, setShowFact] = useState(false)
 
+  // State for hint modal visibility
   const [showHint, setShowHint] = useState(false)
 
+  // State for game completion
   const [isGameEnd, setIsGameEnd] = useState(false)
 
+  // Loading state for API calls
   const [isLoading, setIsLoading] = useState({
     questions: false,
   })
+  // Store quiz questions from API
   const [questions, setQuestions] = useState<QuestionType[]>([])
 
+  // Function to handle answer selection and validation
   function checkAnswer(answer: string) {
+    // Store the selected answer
     setSelectedAnswer(answer)
+
+    // Check if the selected answer matches the correct city
     if (questions[currentQuestionIndex].city == answer) {
+      // Increase score by 2 points for correct answer
       setScore((prev) => prev + 2)
+      // Increment correct answers counter
       setCorrectCount((prev) => prev + 1)
+      // Set answer state to correct
       setAnswerState('correct')
+      // Play correct answer sound effect
       new Howl({ src: ['/correct.mp3'], volume: 0.7, autoplay: true })
     } else {
+      // Set answer state to incorrect
       setAnswerState('incorrect')
+      // Show the correct answer
       setShowCorrectAnswer(true)
+      // Play wrong answer sound effect
       new Howl({ src: ['/wrong.mp3'], volume: 0.7, autoplay: true })
     }
+    // Show fun fact after answering
     setShowFact(true)
   }
 
+  // Reset the state for the next question
   function nextQuestion() {
     setShowCorrectAnswer(false)
     setSelectedAnswer(null)
@@ -68,6 +90,7 @@ export default function Quiz() {
     setIsGameEnd(true)
   }
 
+  // Reset the state for new game
   function playAgain() {
     getCities()
     setCurrentQuestionIndex(0)
