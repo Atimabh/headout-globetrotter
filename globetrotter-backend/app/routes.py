@@ -36,7 +36,7 @@ def save_score():
     score = data.get("score")
     signature = data.get("signature")
 
-    if not username or score or signature is None:
+    if not username or not score or not signature:
         return jsonify({"error": "Username, score and signature are required"}), 400
 
     if not verify_signature(username, score, signature):
